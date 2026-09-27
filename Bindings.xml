@@ -1,0 +1,5 @@
+<Bindings>
+	<Binding name="JAHUB_TOGGLE_BLACKLIST" header="BINDING_HEADER_JAHUB">
+		JohnnysBlackList.BlackListUI:Toggle();
+	</Binding>
+</Bindings>
