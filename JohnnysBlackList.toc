@@ -2,7 +2,7 @@
 ## Title: Johnny's Blacklist
 ## Notes: Blacklist players with unit-popup/slash commands, whisper auto-ignore, and sighting warnings across target/mouseover/group/guild/who.
 ## Author: Johnny
-## Version: 1.0
+## Version: 1.1
 ## SavedVariables: JohnnysAddonHubBlackList
 ## SavedVariablesPerCharacter: JohnnysAddonHubBlackListConfig
 
@@ -14,6 +14,7 @@ Libs\AceConsole-3.0\AceConsole-3.0.xml
 
 Core.lua
 Modules\Skin.lua
+Modules\VersionCheck.lua
 Modules\WindowSettings.lua
 
 Modules\BlackListUI\Data.lua

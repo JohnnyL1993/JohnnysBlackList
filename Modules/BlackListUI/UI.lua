@@ -615,6 +615,8 @@ local function BuildFrame()
 	close:SetPoint("TOPRIGHT", -4, -4)
 	close:SetScript("OnClick", function() BlackListUI:Toggle() end)
 
+	JohnnysBlackList.VersionCheck:AttachNotice(mainFrame)
+
 	if JohnnysBlackList.WindowSettings then
 		JohnnysBlackList.WindowSettings:AttachButton(mainFrame)
 	end
