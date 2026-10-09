@@ -200,7 +200,11 @@ function BlackListUI:RemovePlayer(name)
 		return false
 	end
 
-	local removedName = self:GetEntryByIndex(index).name
+	local removed = self:GetEntryByIndex(index)
+	local removedName = removed.name
+	-- Kept for a short while so the window can offer Undo (see UndoRemove) -
+	-- removing drops the player's whole history, which can't be retyped.
+	self.lastRemoved = { entry = removed, at = GetTime() }
 	table.remove(self:GetList(), index)
 	self:Message(removedName .. " removed from Blacklist.", "yellow")
 
@@ -330,4 +334,36 @@ function BlackListUI:PlayAlertSound()
 		return
 	end
 	PlaySound("PVPTHROUGHQUEUE")
+end
+
+-- Puts back the most recently removed player, history and all. Returns
+-- true plus the restored entry, or false if there's nothing to restore (or
+-- the same name has been added again since).
+function BlackListUI:UndoRemove()
+	local last = self.lastRemoved
+	self.lastRemoved = nil
+	if not last or self:GetIndexByName(last.entry.name) ~= 0 then
+		return false
+	end
+	table.insert(self:GetList(), last.entry)
+	self:Sort()
+	self:Message(last.entry.name .. " restored to Blacklist.", "yellow")
+	if self.RefreshWindow then
+		self:RefreshWindow()
+	end
+	return true, last.entry
+end
+
+-- Remembers the latest time (and how) a blacklisted player was noticed -
+-- shown in the window's details panel and used by its "Seen" sort. Called
+-- from the sighting hooks in Hooks.lua, which already rate-limit themselves.
+function BlackListUI:RecordSighting(entry, where)
+	if not entry then
+		return
+	end
+	entry.seen = { date = time(), where = where }
+	entry.seenCount = (entry.seenCount or 0) + 1
+	if self.RefreshWindow then
+		self:RefreshWindow()
+	end
 end

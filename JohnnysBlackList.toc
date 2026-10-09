@@ -2,7 +2,7 @@
 ## Title: Johnny's Blacklist
 ## Notes: Blacklist players with unit-popup/slash commands, whisper auto-ignore, and sighting warnings across target/mouseover/group/guild/who.
 ## Author: Johnny
-## Version: 1.1
+## Version: 1.2
 ## SavedVariables: JohnnysAddonHubBlackList
 ## SavedVariablesPerCharacter: JohnnysAddonHubBlackListConfig
 

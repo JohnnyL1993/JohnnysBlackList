@@ -177,6 +177,7 @@ function BlackListUI:HookChatMessageHandler()
 						if channelType == "WHISPER" then
 							if not alreadyWarned.WHISPER[name] then
 								alreadyWarned.WHISPER[name] = true
+							BlackListUI:RecordSighting(entry, "whispered you")
 								SendChatMessage("Automatic Message: Ignored", "WHISPER", nil, name)
 							end
 							return
@@ -186,6 +187,7 @@ function BlackListUI:HookChatMessageHandler()
 					elseif entry.warn then
 						if channelType == "WHISPER" and not alreadyWarned.WHISPER[name] then
 							alreadyWarned.WHISPER[name] = true
+							BlackListUI:RecordSighting(entry, "whispered you")
 							warnName = name
 						end
 					end
@@ -220,6 +222,7 @@ function BlackListUI:WarnIfListed(unit, bucket, context)
 		return
 	end
 	alreadyWarned[bucket][name] = GetTime()
+	self:RecordSighting(entry, context)
 
 	self:PlayAlertSound()
 	self:ErrorMessage(name .. " is on your Blacklist (" .. context .. ")", "red", 5)
@@ -246,6 +249,10 @@ function BlackListUI:OnPartyInviteRequest(name)
 	local entry = self:GetEntryByName(name)
 	if not entry then
 		return
+	end
+
+	if not AlreadyWarnedRecently("PARTY_INVITE", name) then
+		self:RecordSighting(entry, "invited you to a group")
 	end
 
 	if entry.ignore then
@@ -305,6 +312,7 @@ function BlackListUI:OnGroupChanged()
 
 			if not AlreadyWarnedRecently("PARTY", name) then
 				alreadyWarned.PARTY[name] = GetTime()
+				self:RecordSighting(entry, "in your group")
 				self:PlayAlertSound()
 				if reason ~= "" then
 					self:Message(name .. " is on your Blacklist (in your group) for: " .. reason, "red")
@@ -340,6 +348,7 @@ function BlackListUI:OnGuildRosterUpdate()
 			local entry = self:GetEntryByName(name)
 			if entry and entry.warn and not AlreadyWarnedRecently("GUILD_ROSTER", name) then
 				alreadyWarned.GUILD_ROSTER[name] = GetTime()
+				self:RecordSighting(entry, "in your guild")
 				self:PlayAlertSound()
 				self:Message(name .. " is on your Blacklist and is in your guild.", "red")
 
