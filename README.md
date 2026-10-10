@@ -4,6 +4,10 @@ A World of Warcraft 3.3.5a addon for the Warmane private server.
 
 Blacklist players with unit-popup/slash commands, whisper auto-ignore, and sighting warnings across target/mouseover/group/guild/who.
 
+## Screenshots
+
+![Blacklist](screenshots/blacklist.png)
+
 ## Requirements
 
 No other addons required. Johnny's Raid Comp shows blacklist flags on raid members when both are installed.
